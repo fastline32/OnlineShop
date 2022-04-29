@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using OnlineShop.Data;
 using Core.Entities;
+using Core.Interfaces;
 
 namespace OnlineShop.Controllers
 {
@@ -11,23 +10,35 @@ namespace OnlineShop.Controllers
     [Route("onlineshop/[controller]")]
     public class ProductController : ControllerBase
     {
-        private readonly ShopContext _db;
+        private readonly IProductRepository _repo;
 
-        public ProductController(ShopContext db)
+        public ProductController(IProductRepository repo)
         {
-            _db = db;
+            _repo = repo;
         }
         [HttpGet]
         public async Task<ActionResult<List<Product>>> GetProducts()
         {
-            var list = await _db.Products.ToListAsync();
+            var list = await _repo.GetListOfProductsAsync();
             return Ok(list);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
-            return await _db.Products.FindAsync(id);
+            return await _repo.GetProductByIdAsync(id);
+        }
+
+        [HttpGet("brands")]
+        public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductBrands()
+        {
+            return Ok(await _repo.GetProductBrandsAsync());
+        }
+
+        [HttpGet("types")]
+        public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypes()
+        {
+            return Ok(await _repo.GetProductTypesAsync());
         }
     }
 }

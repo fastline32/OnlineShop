@@ -1,3 +1,5 @@
+using Core.Interfaces;
+using Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,7 +9,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
-using OnlineShop.Data;
 
 namespace OnlineShop
 {
@@ -26,6 +27,7 @@ namespace OnlineShop
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddMicrosoftIdentityWebApi(_configuration.GetSection("AzureAd"));
 
+            services.AddScoped<IProductRepository, ProductRepository>();
             services.AddControllers();
             services.AddDbContext<ShopContext>(x => x.UseSqlite(_configuration.GetConnectionString("DefaultString")));
             services.AddSwaggerGen(c =>
