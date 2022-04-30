@@ -6,13 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
+using Microsoft.AspNetCore.Http;
 using OnlineShop.Dtos;
+using OnlineShop.Errors;
 
 namespace OnlineShop.Controllers
 {
-    [ApiController]
-    [Route("onlineshop/[controller]")]
-    public class ProductController : ControllerBase
+  
+    public class ProductController : BaseApiController
     {
         private readonly IGenericRepository<Product> _productRepo;
         private readonly IGenericRepository<ProductType> _productTypeRepo;
@@ -36,10 +37,13 @@ namespace OnlineShop.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse),StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProductToReturn>> GetProduct(int id)
         {
             var spec = new ProductsWithBrandsAndTypesSpecifications(id);
             var product =await _productRepo.GetEntityWithSpec(spec);
+            if (product == null) return NotFound(new ApiResponse(404));
             return _mapper.Map<Product,ProductToReturn>(product);
         }
 

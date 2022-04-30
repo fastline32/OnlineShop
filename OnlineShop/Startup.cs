@@ -1,4 +1,3 @@
-using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -6,10 +5,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
-using Microsoft.OpenApi.Models;
+using OnlineShop.Extensions;
 using OnlineShop.Helpers;
+using OnlineShop.Middleware;
 
 namespace OnlineShop
 {
@@ -27,30 +26,24 @@ namespace OnlineShop
         {
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddMicrosoftIdentityWebApi(_configuration.GetSection("AzureAd"));
+            services.AddSwaggerDocumentation();
 
-            services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
             services.AddAutoMapper(typeof(MappingProfiles));
             services.AddControllers();
             services.AddDbContext<ShopContext>(x => x.UseSqlite(_configuration.GetConnectionString("DefaultString")));
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "OnlineShop", Version = "v1" });
-            });
+            services.AddApplicationServices();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "OnlineShop v1"));
-            }
+            app.UseMiddleware<ExceptionMiddleware>();
+            
 
+            app.UseStatusCodePagesWithReExecute("/errors/{0}");
             app.UseHttpsRedirection();
-
+            app.UseSwaggerDocumentation();
             app.UseRouting();
             app.UseStaticFiles();
             app.UseAuthentication();
