@@ -9,6 +9,7 @@ using Core.Specifications;
 using Microsoft.AspNetCore.Http;
 using OnlineShop.Dtos;
 using OnlineShop.Errors;
+using OnlineShop.Helpers;
 
 namespace OnlineShop.Controllers
 {
@@ -29,11 +30,14 @@ namespace OnlineShop.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ProductToReturn>>> GetProducts()
+        public async Task<ActionResult<Pagination<ProductToReturn>>> GetProducts([FromQuery]ProductSpecParams productParams)
         {
-            var spec = new ProductsWithBrandsAndTypesSpecifications();
+            var spec = new ProductsWithBrandsAndTypesSpecifications(productParams);
+            var countSpec = new ProductWithFiltersForCountSpecifications(productParams);
+            var totalItems = await _productRepo.CountAsync(countSpec);
             var list = await _productRepo.ListAsync(spec);
-            return Ok(_mapper.Map<IReadOnlyList<Product>,IReadOnlyList<ProductToReturn>>(list));
+            var data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturn>>(list);
+            return Ok(new Pagination<ProductToReturn>(productParams.PageIndex,productParams.PageSize,totalItems,data));
         }
 
         [HttpGet("{id}")]
