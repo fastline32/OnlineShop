@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
+using OnlineShop.Helpers;
 
 namespace OnlineShop
 {
@@ -28,6 +29,8 @@ namespace OnlineShop
                 .AddMicrosoftIdentityWebApi(_configuration.GetSection("AzureAd"));
 
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
+            services.AddAutoMapper(typeof(MappingProfiles));
             services.AddControllers();
             services.AddDbContext<ShopContext>(x => x.UseSqlite(_configuration.GetConnectionString("DefaultString")));
             services.AddSwaggerGen(c =>
