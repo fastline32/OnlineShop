@@ -15,7 +15,7 @@
         {
             return statusCode switch
             {
-                400 => "Bad Request",
+                400 => "Bad Request for you",
                 401 => "Need valid authentication",
                 404 => "Not Found",
                 500 => "Internal Server Error",
