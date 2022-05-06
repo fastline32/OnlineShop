@@ -9,6 +9,7 @@ using Microsoft.Identity.Web;
 using OnlineShop.Extensions;
 using OnlineShop.Helpers;
 using OnlineShop.Middleware;
+using StackExchange.Redis;
 
 namespace OnlineShop
 {
@@ -37,6 +38,11 @@ namespace OnlineShop
             services.AddAutoMapper(typeof(MappingProfiles));
             services.AddControllers();
             services.AddDbContext<ShopContext>(x => x.UseSqlite(_configuration.GetConnectionString("DefaultString")));
+            services.AddSingleton<IConnectionMultiplexer>(c =>
+            {
+                var configuration = ConfigurationOptions.Parse(_configuration.GetConnectionString("Redis"),true);
+                return ConnectionMultiplexer.Connect(configuration);
+            });
             services.AddApplicationServices();
             
         }
