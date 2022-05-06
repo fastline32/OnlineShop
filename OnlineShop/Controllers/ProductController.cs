@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
+using Infrastructure.Data;
 using Microsoft.AspNetCore.Http;
 using OnlineShop.Dtos;
 using OnlineShop.Errors;
@@ -20,14 +21,16 @@ namespace OnlineShop.Controllers
         private readonly IGenericRepository<ProductType> _productTypeRepo;
         private readonly IGenericRepository<ProductBrand> _productBrandRepo;
         private readonly IMapper _mapper;
+        private readonly ShopContext _db;
 
         public ProductController(IGenericRepository<Product> productRepo,IGenericRepository<ProductType> productTypeRepo
-            ,IGenericRepository<ProductBrand> productBrandRepo,IMapper mapper)
+            ,IGenericRepository<ProductBrand> productBrandRepo,IMapper mapper, ShopContext db)
         {
             _productRepo = productRepo;
             _productTypeRepo = productTypeRepo;
             _productBrandRepo = productBrandRepo;
             _mapper = mapper;
+            _db = db;
         }
         [HttpGet]
         public async Task<ActionResult<Pagination<ProductToReturn>>> GetProducts([FromQuery]ProductSpecParams productParams)
