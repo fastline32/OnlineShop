@@ -1,4 +1,5 @@
 using Infrastructure.Data;
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,8 +26,6 @@ namespace OnlineShop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddMicrosoftIdentityWebApi(_configuration.GetSection("AzureAd"));
             services.AddSwaggerDocumentation();
             services.AddCors(opt =>
             {
@@ -37,14 +36,20 @@ namespace OnlineShop
             });
             services.AddAutoMapper(typeof(MappingProfiles));
             services.AddControllers();
-            services.AddDbContext<ShopContext>(x => x.UseSqlite(_configuration.GetConnectionString("DefaultString")));
+            services.AddDbContext<ShopContext>(x =>
+                x.UseSqlite(_configuration.GetConnectionString("DefaultString")));
+            services.AddDbContext<AppIdentityDbContext>(x =>
+            {
+                x.UseSqlite(_configuration.GetConnectionString("IdentityConnection"));
+            });
             services.AddSingleton<IConnectionMultiplexer>(c =>
             {
                 var configuration = ConfigurationOptions.Parse(_configuration.GetConnectionString("Redis"),true);
                 return ConnectionMultiplexer.Connect(configuration);
             });
             services.AddApplicationServices();
-            
+            services.AddIdentityServices(_configuration);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

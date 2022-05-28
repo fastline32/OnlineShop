@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Errors;
 
@@ -22,6 +23,13 @@ namespace OnlineShop.Controllers
                 return NotFound(new ApiResponse(404));
             }
             return Ok();
+        }
+
+        [HttpGet("testauth")]
+        [Authorize]
+        public ActionResult<string> GetSecretText()
+        {
+            return "secret staff";
         }
 
         [HttpGet("servererror")]

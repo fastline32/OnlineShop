@@ -41,6 +41,7 @@ namespace Infrastructure.Data
             return await ApplySpecifications(spec).CountAsync();
         }
 
+
         private IQueryable<T> ApplySpecifications(ISpecification<T> spec)
         {
             return SpecificationEvaluator<T>.GetQuery(_db.Set<T>().AsQueryable(), spec);

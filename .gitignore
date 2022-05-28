@@ -3,3 +3,8 @@ obj
 appsettings.json
 *.db
 *.rdb
+.suo
+.dtbcache.v2
+*.testlog
+*.manifest
+*.json
