@@ -5,6 +5,7 @@ using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
 using Microsoft.EntityFrameworkCore;
+using SQLitePCL;
 
 namespace Infrastructure.Data
 {
@@ -39,6 +40,22 @@ namespace Infrastructure.Data
         public async Task<int> CountAsync(ISpecification<T> spec)
         {
             return await ApplySpecifications(spec).CountAsync();
+        }
+
+        public void Add(T entity)
+        {
+            _db.Set<T>().Add(entity);
+        }
+
+        public void Update(T entity)
+        {
+            _db.Set<T>().Attach(entity);
+            _db.Entry(entity).State = EntityState.Modified;
+        }
+
+        public void Delete(T entity)
+        {
+            _db.Set<T>().Remove(entity);
         }
 
 
