@@ -28,6 +28,8 @@ namespace OnlineShop.Controllers
             _productBrandRepo = productBrandRepo;
             _mapper = mapper;
         }
+        
+        [Cache(600)]
         [HttpGet]
         public async Task<ActionResult<Pagination<ProductToReturn>>> GetProducts([FromQuery]ProductSpecParams productParams)
         {
@@ -39,6 +41,7 @@ namespace OnlineShop.Controllers
             return Ok(new Pagination<ProductToReturn>(productParams.PageIndex,productParams.PageSize,totalItems,data));
         }
 
+        [Cache(600)]
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse),StatusCodes.Status404NotFound)]
@@ -50,12 +53,14 @@ namespace OnlineShop.Controllers
             return _mapper.Map<Product,ProductToReturn>(product);
         }
 
+        [Cache(600)]
         [HttpGet("brands")]
         public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductBrands()
         {
             return Ok(await _productBrandRepo.ListAllAsync());
         }
 
+        [Cache(600)]
         [HttpGet("types")]
         public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypes()
         {

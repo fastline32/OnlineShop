@@ -31,8 +31,6 @@ namespace OnlineShop.Controllers
         [HttpGet]
         public async Task<ActionResult<UserDto>> GetCurrentUser()
         {
-
-
             var user = await _userManager.FindByEmailFromClaimsPrincipal(HttpContext.User);
             return new UserDto
             {

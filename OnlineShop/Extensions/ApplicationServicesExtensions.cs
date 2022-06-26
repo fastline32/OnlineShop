@@ -12,6 +12,7 @@ namespace OnlineShop.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+            services.AddSingleton<IResponseCacheService,ResponseCacheService>();
             services.AddScoped<ITokenService, TokenServices>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IPaymentService, PaymentService>();
