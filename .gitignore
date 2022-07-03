@@ -8,3 +8,6 @@ appsettings.json
 *.testlog
 *.manifest
 *.json
+publish
+wwwroot
+*.yml

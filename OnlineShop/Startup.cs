@@ -37,10 +37,10 @@ namespace OnlineShop
             services.AddAutoMapper(typeof(MappingProfiles));
             services.AddControllers();
             services.AddDbContext<ShopContext>(x =>
-                x.UseSqlite(_configuration.GetConnectionString("DefaultString")));
+                x.UseNpgsql(_configuration.GetConnectionString("DefaultString")));
             services.AddDbContext<AppIdentityDbContext>(x =>
             {
-                x.UseSqlite(_configuration.GetConnectionString("IdentityConnection"));
+                x.UseNpgsql(_configuration.GetConnectionString("IdentityConnection"));
             });
             services.AddSingleton<IConnectionMultiplexer>(c =>
             {

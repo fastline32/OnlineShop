@@ -38,7 +38,7 @@ namespace OnlineShop
                     logger.LogError(ex,"An error occured during migration");
                 }
             }
-            await host.RunAsync();
+            host.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

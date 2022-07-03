@@ -4,6 +4,7 @@ using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OnlineShop.Errors;
 using Stripe;
@@ -15,12 +16,13 @@ namespace OnlineShop.Controllers
     {
         private readonly IPaymentService _paymentService;
         private readonly ILogger<IPaymentService> _logger;
-        private const string WhSecret = "whsec_2c6af5ddecbfca4235a11130cb3209dab6649fffc065f4317efc012497b3c21c";
+        private readonly string _whSecret;
 
-        public PaymentController(IPaymentService paymentService, ILogger<IPaymentService> logger)
+        public PaymentController(IPaymentService paymentService, ILogger<IPaymentService> logger, IConfiguration config)
         {
             _paymentService = paymentService;
             _logger = logger;
+            _whSecret = config.GetSection("StripeSettings:WhSecret").Value;
         }
 
         [Authorize]
@@ -39,7 +41,7 @@ namespace OnlineShop.Controllers
         {
             var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
             var stripeEvent = EventUtility.ConstructEvent(json, Request.Headers["Stripe-Signiture"],
-            WhSecret);
+            _whSecret);
 
             PaymentIntent intent;
             Order order;
