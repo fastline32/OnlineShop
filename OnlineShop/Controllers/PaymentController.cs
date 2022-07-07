@@ -40,7 +40,7 @@ namespace OnlineShop.Controllers
         public async Task<ActionResult> StripeWebHook()
         {
             var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
-            var stripeEvent = EventUtility.ConstructEvent(json, Request.Headers["Stripe-Signiture"],
+            var stripeEvent = EventUtility.ConstructEvent(json, Request.Headers["Stripe-Signature"],
             _whSecret);
 
             PaymentIntent intent;
