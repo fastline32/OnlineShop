@@ -5,7 +5,6 @@ using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
 using Microsoft.EntityFrameworkCore;
-using SQLitePCL;
 
 namespace Infrastructure.Data
 {
@@ -49,8 +48,9 @@ namespace Infrastructure.Data
 
         public void Update(T entity)
         {
-            _db.Set<T>().Attach(entity);
-            _db.Entry(entity).State = EntityState.Modified;
+            // _db.Set<T>().Attach(entity);
+            // _db.Entry(entity).State = EntityState.Modified;
+            _db.Set<T>().Update(entity);
         }
 
         public void Delete(T entity)

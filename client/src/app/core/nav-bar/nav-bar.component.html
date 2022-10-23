@@ -6,6 +6,48 @@
       <a class="p-2" routerLink="/shop" routerLinkActive="active">Shop</a>
       <a class="p-2" routerLink="/test-error" routerLinkActive="active">Errors</a>
     </nav>
+    <div *ngIf="(currentUser$ | async) !== null && (currentUserRole$ === 'admin' || currentUserRole$ === 'editor')" class="d-flex align-items-center">
+        <ng-container  >
+        <div *ngIf="currentUserRole$ === 'admin'" class="dropdown ml-3 mr-5" dropdown>
+          <a  class="dropdown-toggle" style="cursor: pointer" dropdownToggle>
+            <strong>Admin Panel</strong>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" style="cursor: pointer;" *dropdownMenu>
+             <a routerLink="/brands" class="dropdown-item d-flex align-items center py-2">
+               <i class="fa fa-pencil mr-2"></i> Edit Brand
+             </a>
+             <a routerLink="/types" class="dropdown-item d-flex align-items center py-2">
+              <i class="fa fa-pencil mr-2"></i> Edit Types
+            </a>
+            <a routerLink="/product" class="dropdown-item d-flex align-items center py-2">
+              <i class="fa fa-pencil mr-2"></i> Edit Product
+            </a>
+            <a routerLink="/users" class="dropdown-item d-flex align-items center py-2">
+              <i class="fa fa-pencil mr-2"></i> User Menu
+            </a>
+            <div class="dropdown-divider"></div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="currentUserRole$ === 'admin' || currentUserRole$ === 'editor'" >
+        <div class="dropdown ml-3 mr-5" dropdown>
+          <a class="dropdown-toggle" style="cursor: pointer" dropdownToggle>
+            <strong>Editor Panel</strong>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" style="cursor: pointer;" *dropdownMenu>
+             <a routerLink="/brands" class="dropdown-item d-flex align-items center py-2">
+               <i class="fa fa-pencil mr-2"></i> Edit Brand
+             </a>
+             <a routerLink="/types" class="dropdown-item d-flex align-items center py-2">
+              <i class="fa fa-pencil mr-2"></i> Edit Types
+            </a>
+            <a routerLink="/product" class="dropdown-item d-flex align-items center py-2">
+              <i class="fa fa-pencil mr-2"></i> Edit Product
+            </a>
+          </div>
+        </div>
+      </ng-container>
+  </div>
     <div class="d-flex align-items-center">
         <a routerLink="/basket" class="position-relative">
             <i class="fa fa-shopping-cart fa-2x mr-5 text-dark"></i>

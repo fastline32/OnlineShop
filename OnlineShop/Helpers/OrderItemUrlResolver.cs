@@ -1,5 +1,4 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using Core.Entities.OrderAggregate;
 using Microsoft.Extensions.Configuration;
 using OnlineShop.Dtos;

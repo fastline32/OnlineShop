@@ -42,6 +42,7 @@ namespace OnlineShop
             {
                 x.UseNpgsql(_configuration.GetConnectionString("IdentityConnection"));
             });
+            
             services.AddSingleton<IConnectionMultiplexer>(c =>
             {
                 var configuration = ConfigurationOptions.Parse(_configuration.GetConnectionString("Redis"),true);
@@ -56,7 +57,6 @@ namespace OnlineShop
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseMiddleware<ExceptionMiddleware>();
-            
 
             app.UseStatusCodePagesWithReExecute("/errors/{0}");
             app.UseHttpsRedirection();

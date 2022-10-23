@@ -24,9 +24,22 @@ namespace Infrastructure.Identity
                         Country = "Bulgaria",
                         City = "Sofia",
                         ZipCode = "1632"
-                    }
+                    },
+                    Role = "admin"
                 };
                 await userManager.CreateAsync(user, "Pa$$w0rd");
+            }
+        }
+
+        public static async Task SeedRoles(RoleManager<IdentityRole> roleManager)
+        {
+            if (!roleManager.Roles.Any())
+            {
+                var role = new IdentityRole
+                {
+                    Name = "admin"
+                };
+                await roleManager.CreateAsync(role);
             }
         }
     }

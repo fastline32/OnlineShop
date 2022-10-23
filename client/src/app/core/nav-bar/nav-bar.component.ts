@@ -13,16 +13,18 @@ import { IUser } from 'src/app/shared/models/user';
 export class NavBarComponent implements OnInit {
   basket$: Observable<IBasket>;
   currentUser$: Observable<IUser>;
+  currentUserRole$: string;
+  currentrole: any;
 
   constructor(private basketService: BasketService, private accountService: AccountService) { }
 
   ngOnInit(): void {
     this.basket$ = this.basketService.basket$;
     this.currentUser$ = this.accountService.currentUser$;
+    this.currentUserRole$ = this.accountService.getRoleByToken(this.accountService.getToken());
   }
 
   logout() {
     this.accountService.logout();
   }
-
 }

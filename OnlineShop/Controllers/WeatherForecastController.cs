@@ -5,15 +5,11 @@ using Microsoft.Identity.Web.Resource;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace OnlineShop.Controllers
 {
-    [Authorize]
-    [ApiController]
-    [Route("[controller]")]
-    [ApiExplorerSettings(IgnoreApi = true)]
-    public class WeatherForecastController : ControllerBase
+    [Authorize(Roles = "admin")]
+    public class WeatherForecastController : BaseApiController
     {
         private static readonly string[] Summaries = new[]
         {

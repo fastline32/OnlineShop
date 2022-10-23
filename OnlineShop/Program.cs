@@ -28,9 +28,11 @@ namespace OnlineShop
                     await StoreContextSeed.SeedAsync(context, loggerFactory);
 
                     var userManager = services.GetService<UserManager<AppUser>>();
+                    var roleManager = services.GetService<RoleManager<IdentityRole>>();
                     var identityContext = services.GetService<AppIdentityDbContext>();
                     await identityContext.Database.MigrateAsync();
                     await AppIdentityDbContextSeed.SeedUsersAsync(userManager);
+                    await AppIdentityDbContextSeed.SeedRoles(roleManager);
                 }
                 catch (Exception ex)
                 {

@@ -103,7 +103,8 @@ namespace OnlineShop.Controllers
             {
                 DisplayName = registerDto.DisplayName,
                 Email = registerDto.Email,
-                UserName = registerDto.Email
+                UserName = registerDto.Email,
+                Role = registerDto.Role
             };
             var result = await _userManager.CreateAsync(user, registerDto.Password);
 
@@ -113,9 +114,9 @@ namespace OnlineShop.Controllers
             {
                 DisplayName = user.DisplayName,
                 Token = _tokenService.CreateToken(user),
-                Email = user.Email
+                Email = user.Email,
+                Role = user.Role
             };
         }
-
     }
 }

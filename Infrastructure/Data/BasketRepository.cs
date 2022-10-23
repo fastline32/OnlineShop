@@ -23,7 +23,8 @@ namespace Infrastructure.Data
 
         public async Task<CustomerBasket> UpdateBasketAsync(CustomerBasket basket)
         {
-            var created = await _database.StringSetAsync(basket.Id, JsonSerializer.Serialize(basket),TimeSpan.FromDays(10));
+            var created = await _database.StringSetAsync(basket.Id, JsonSerializer
+            .Serialize(basket),TimeSpan.FromDays(10));
 
             if (!created) return null;
 

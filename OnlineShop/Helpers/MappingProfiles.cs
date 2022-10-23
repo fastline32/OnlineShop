@@ -17,7 +17,10 @@ namespace OnlineShop.Helpers
             CreateMap<Address,AddressDto>().ReverseMap();
             CreateMap<CustomerBasketDto,CustomerBasket>();
             CreateMap<BasketItemDto,BasketItem>();
+            CreateMap<BrandDto,ProductBrand>();
+            CreateMap<TypeDto,ProductType>();
             CreateMap<AddressDto, Core.Entities.OrderAggregate.Address>();
+            CreateMap<ProductToCreateOrUpdate,Product>();
             CreateMap<Order, OrderToReturnDto>()
                 .ForMember(d => d.DeliveryMethod, o => o.MapFrom(s => s.DeliveryMethod.ShortName))
                 .ForMember(d => d.ShippingPrice, o => o.MapFrom(s => s.DeliveryMethod.Price));

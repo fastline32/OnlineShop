@@ -1,24 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-  <None Include="Data\SeedData\**" CopyToOutputDirectory="PreserveNewest"/>
+  <None Include="Data\SeedData\**" CopyToOutputDirectory="PreserveNewest" />
     <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.0" />
-		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.17.0" />
-		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.0" />
-		<PackageReference Include="StackExchange.Redis" Version="2.5.61" />
-		<PackageReference Include="Stripe.net" Version="39.120.0" />
-		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.17.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.8">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.8" />
+		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.22.0" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.6" />
+		<PackageReference Include="StackExchange.Redis" Version="2.6.48" />
+		<PackageReference Include="Stripe.net" Version="40.3.0" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.22.0" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Data\SeedData\" />
 	</ItemGroup>
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
 </Project>

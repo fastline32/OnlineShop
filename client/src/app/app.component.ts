@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from './account/account.service';
 import { BasketService } from './basket/basket.service';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -9,7 +8,8 @@ import { BasketService } from './basket/basket.service';
 })
 export class AppComponent implements OnInit{
   title = 'OnlineShop';
-
+  currentrole:any;
+  displayHomeTest = false;
   constructor(private basketService: BasketService, private accountService: AccountService) {
 
   }
@@ -17,6 +17,10 @@ export class AppComponent implements OnInit{
   ngOnInit(): void {
     this.loadBasket();
     this.loadCurrentUser();
+    this.getRole();
+    this.accountService.updateMenu.subscribe(res => {
+      this.ngOnInit
+    })
   }
 
   loadCurrentUser() {
@@ -36,6 +40,11 @@ export class AppComponent implements OnInit{
       }, error => {
         console.log(error);
       });
+    }
+  }
+  getRole(){
+    if (this.accountService.getToken() != '') {
+      this.currentrole = this.accountService.getRoleByToken(this.accountService.getToken());
     }
   }
 }

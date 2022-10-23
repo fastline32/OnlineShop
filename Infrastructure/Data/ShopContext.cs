@@ -5,13 +5,12 @@ using Core.Entities;
 using Core.Entities.OrderAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Microsoft.Extensions.Options;
 
 namespace Infrastructure.Data
 {
     public class ShopContext : DbContext
     {
-        public ShopContext(DbContextOptions<ShopContext> options) : base(options)
+        public ShopContext(DbContextOptions<ShopContext> options) :  base(options)
         {
         }
         public DbSet<Product> Products { get; set; }
