@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Core.Entities;
+using Core.Entities.Identity;
 using Core.Entities.OrderAggregate;
+using Microsoft.AspNetCore.Identity;
 using OnlineShop.Dtos;
 using Address = Core.Entities.Identity.Address;
 
@@ -8,8 +10,10 @@ namespace OnlineShop.Helpers
 {
     public class MappingProfiles : Profile
     {
+        private UserManager<AppUser> _userManager;
         public MappingProfiles()
         {
+            
             CreateMap<Product, ProductToReturn>()
                 .ForMember(d => d.ProductBrand,o=>o.MapFrom(s => s.ProductBrand.Name))
                 .ForMember(p => p.ProductType,o=>o.MapFrom(s=> s.ProductType.Name))
@@ -29,6 +33,7 @@ namespace OnlineShop.Helpers
                 .ForMember(d => d.ProductName, o => o.MapFrom(s => s.ItemOrdered.ProductName))
                 .ForMember(d => d.PictureUrl, o => o.MapFrom(s => s.ItemOrdered.PictureUrl))
                 .ForMember(d => d.PictureUrl,o => o.MapFrom<OrderItemUrlResolver>());
+
         }
     }
 }

@@ -20,7 +20,9 @@ const routes: Routes = [
   { path: 'checkout', canActivate: [AuthGuard], loadChildren: () => import('./checkout/checkout.module').then(mod => mod.CheckoutModule)
   , data:{breadcrumb: 'Checkout'} },
   { path: 'account', loadChildren: () => import('./account/account.module').then(mod => mod.AccountModule)
-  , data:{breadcrumb: {skip: true} } }
+  , data:{breadcrumb: {skip: true} } },
+  { path: 'users', loadChildren: () => import('./users/user.module').then(mod => mod.UserModule)
+  , data:{breadcrumb: 'Users' } }
 ];
 
 @NgModule({

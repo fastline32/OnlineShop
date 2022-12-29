@@ -35,7 +35,7 @@ namespace OnlineShop.Controllers
             return new UserDto
             {
                 Email = user.Email,
-                Token = _tokenService.CreateToken(user),
+                Token =await _tokenService.CreateToken(user),
                 DisplayName = user.DisplayName
             };
         }
@@ -85,7 +85,7 @@ namespace OnlineShop.Controllers
             return new UserDto
             {
                 Email = user.Email,
-                Token = _tokenService.CreateToken(user),
+                Token =await _tokenService.CreateToken(user),
                 DisplayName = user.DisplayName
             };
         }
@@ -103,19 +103,19 @@ namespace OnlineShop.Controllers
             {
                 DisplayName = registerDto.DisplayName,
                 Email = registerDto.Email,
-                UserName = registerDto.Email,
-                Role = registerDto.Role
+                UserName = registerDto.Email
             };
             var result = await _userManager.CreateAsync(user, registerDto.Password);
 
             if (!result.Succeeded) return BadRequest(new ApiResponse(400));
+            var test = await _userManager.AddToRoleAsync(user,"customer");
 
+            if(!test.Succeeded) return BadRequest(new ApiResponse(400,"Cannot assign to role"));
             return new UserDto
             {
                 DisplayName = user.DisplayName,
-                Token = _tokenService.CreateToken(user),
-                Email = user.Email,
-                Role = user.Role
+                Token = await _tokenService.CreateToken(user),
+                Email = user.Email
             };
         }
     }

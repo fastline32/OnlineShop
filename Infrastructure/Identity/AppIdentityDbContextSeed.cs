@@ -24,10 +24,10 @@ namespace Infrastructure.Identity
                         Country = "Bulgaria",
                         City = "Sofia",
                         ZipCode = "1632"
-                    },
-                    Role = "admin"
+                    }
                 };
                 await userManager.CreateAsync(user, "Pa$$w0rd");
+                await userManager.AddToRoleAsync(user,"admin");
             }
         }
 
@@ -38,6 +38,12 @@ namespace Infrastructure.Identity
                 var role = new IdentityRole
                 {
                     Name = "admin"
+                };
+                await roleManager.CreateAsync(role);
+
+                role = new IdentityRole
+                {
+                    Name = "customer"
                 };
                 await roleManager.CreateAsync(role);
             }

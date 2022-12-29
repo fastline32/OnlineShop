@@ -31,8 +31,9 @@ namespace OnlineShop
                     var roleManager = services.GetService<RoleManager<IdentityRole>>();
                     var identityContext = services.GetService<AppIdentityDbContext>();
                     await identityContext.Database.MigrateAsync();
-                    await AppIdentityDbContextSeed.SeedUsersAsync(userManager);
                     await AppIdentityDbContextSeed.SeedRoles(roleManager);
+                    await AppIdentityDbContextSeed.SeedUsersAsync(userManager);
+                    
                 }
                 catch (Exception ex)
                 {
