@@ -1,4 +1,5 @@
 using System.IO;
+using Core.Entities;
 using Infrastructure.Data;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Builder;
@@ -48,6 +49,7 @@ namespace OnlineShop
                 var configuration = ConfigurationOptions.Parse(_configuration.GetConnectionString("Redis"),true);
                 return ConnectionMultiplexer.Connect(configuration);
             });
+            services.Configure<SMTPConfigModel>(_configuration.GetSection("SMTPConfig"));
             services.AddApplicationServices();
             services.AddIdentityServices(_configuration);
 

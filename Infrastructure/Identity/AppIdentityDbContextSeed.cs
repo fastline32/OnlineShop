@@ -46,6 +46,12 @@ namespace Infrastructure.Identity
                     Name = "customer"
                 };
                 await roleManager.CreateAsync(role);
+                
+                role = new IdentityRole
+                {
+                    Name = "manager"
+                };
+                await roleManager.CreateAsync(role);
             }
         }
     }

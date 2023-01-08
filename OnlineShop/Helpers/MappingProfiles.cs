@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Core.Entities;
-using Core.Entities.Identity;
 using Core.Entities.OrderAggregate;
-using Microsoft.AspNetCore.Identity;
 using OnlineShop.Dtos;
 using Address = Core.Entities.Identity.Address;
 
@@ -10,7 +8,6 @@ namespace OnlineShop.Helpers
 {
     public class MappingProfiles : Profile
     {
-        private UserManager<AppUser> _userManager;
         public MappingProfiles()
         {
             

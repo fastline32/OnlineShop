@@ -1,10 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
+using Core.Entities;
 using Core.Entities.Identity;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using OnlineShop.Dtos;
 using OnlineShop.Errors;
 using OnlineShop.Extensions;
@@ -17,14 +20,19 @@ namespace OnlineShop.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
+        private readonly IEmailService _emailService;
+        private readonly IConfiguration _config;
 
         public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager
-                                ,ITokenService tokenService, IMapper mapper)
+                                ,ITokenService tokenService, IMapper mapper,IEmailService emailService,
+                                IConfiguration config)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
             _mapper = mapper;
+            _emailService = emailService;
+            _config = config;
         }
 
         [Authorize]
@@ -96,9 +104,7 @@ namespace OnlineShop.Controllers
             if (CheckEmailExistAsync(registerDto.Email).Result.Value)
             {
                 return new BadRequestObjectResult(new ApiValidationError{Error = new []{"Email address is in use"}});
-            }
-
-
+            };
             var user = new AppUser
             {
                 DisplayName = registerDto.DisplayName,
@@ -108,15 +114,53 @@ namespace OnlineShop.Controllers
             var result = await _userManager.CreateAsync(user, registerDto.Password);
 
             if (!result.Succeeded) return BadRequest(new ApiResponse(400));
+            
             var test = await _userManager.AddToRoleAsync(user,"customer");
 
             if(!test.Succeeded) return BadRequest(new ApiResponse(400,"Cannot assign to role"));
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            if (!string.IsNullOrEmpty(token))
+            {
+                await SendConfirmationEmail(user, token);
+            }
             return new UserDto
             {
                 DisplayName = user.DisplayName,
                 Token = await _tokenService.CreateToken(user),
                 Email = user.Email
             };
+        }
+
+        private async Task SendConfirmationEmail(AppUser appUser, string token)
+        {
+            string appDomain = _config.GetSection("ApiUrlConfirm").Value;
+            string confirmationLink = _config.GetSection("EmailConfirmation").Value;
+            UserEmailOptions userEmailOptions = new UserEmailOptions
+            {
+                ToEmails = new List<string>() {appUser.Email},
+                PlaceHolders = new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("{{UserName}}",appUser.DisplayName),
+                    new KeyValuePair<string, string>("{{Link}}",string.Format(appDomain+confirmationLink,appUser.Id,token))
+                }
+            };
+
+            await _emailService.SendEmailConfirmationEmail(userEmailOptions);
+        }
+
+        [HttpGet("confirm-email")]
+        public async Task ConfirmEmail([FromQuery]string uid, [FromQuery]string token)
+        {
+            token = token.Replace(' ','+');
+            if (!string.IsNullOrEmpty(uid) && !string.IsNullOrEmpty(token))
+            {
+                var result = await ConfirmEmailAsync(uid, token);
+            }
+        }
+
+        private async Task<IdentityResult> ConfirmEmailAsync(string uid, string token)
+        {
+            return await _userManager.ConfirmEmailAsync(await _userManager.FindByIdAsync(uid), token);
         }
     }
 }

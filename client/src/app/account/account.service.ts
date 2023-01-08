@@ -1,9 +1,10 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { map, of, ReplaySubject, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { IAddress } from '../shared/models/address';
+import { EmailConfirm } from '../shared/models/EmailConfirm';
 import { IUser } from '../shared/models/user';
 
 @Injectable({
@@ -57,8 +58,9 @@ export class AccountService {
     return this.http.post(this.baseUrl + 'account/register',values).pipe(
       map((user: IUser) => {
         if (user) {
-          localStorage.setItem('token',user.token);
-          this.currentUserSource.next(user);
+          // localStorage.setItem('token',user.token);
+          // this.currentUserSource.next(user);
+          this.router.navigateByUrl('account/confirm-email')
         }
       })
     );
@@ -91,6 +93,13 @@ export class AccountService {
   }
 
   getToken(){
-    return localStorage.getItem("token") || '';
+    return localStorage.getItem('token') || '';
   }
-}
+  
+  emailConfirm(uid: string,token: string) {
+    let params = new HttpParams({ encoder: new EmailConfirm() })
+    params = params.append('token', token);
+    params = params.append('uid', uid);
+    return this.http.get(this.baseUrl+"account/confirm-email",{params: params});
+    };
+  }

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Services;
@@ -19,6 +20,7 @@ namespace OnlineShop.Extensions
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IBasketRepository, BasketRepository>();
+            services.AddScoped<IEmailService,EmailService>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.Configure<ApiBehaviorOptions>(options =>
             {
@@ -35,6 +37,7 @@ namespace OnlineShop.Extensions
                     return new BadRequestObjectResult(errorResponse);
                 };
             });
+            
             return services;
         }
     }
