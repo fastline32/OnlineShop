@@ -24,4 +24,8 @@ export class CheckoutService {
       })
     );
   }
+
+  webHook(){
+    return this.http.post(this.baseUrl+'webhook',{})
+  }
 }

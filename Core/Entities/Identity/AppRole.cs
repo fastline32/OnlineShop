@@ -3,10 +3,8 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Core.Entities.Identity
 {
-    public class AppUser : IdentityUser
+    public class AppRole : IdentityRole
     {
-        public string DisplayName { get; set; }
-        public Address Address { get; set; }
         public ICollection<AppUserRole> UserRole { get; set; }
     }
 }

@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Dtos;
 using OnlineShop.Errors;
@@ -9,6 +10,7 @@ using OnlineShop.Helpers;
 
 namespace OnlineShop.Controllers
 {
+    [Authorize(Roles = WebContains.AdminRole + "," + WebContains.ManagerRole)]
     public class BrandController : BaseApiController
     {
         private readonly IUnitOfWork _unitOfWork;

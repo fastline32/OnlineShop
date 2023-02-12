@@ -31,23 +31,23 @@ namespace Infrastructure.Identity
             }
         }
 
-        public static async Task SeedRoles(RoleManager<IdentityRole> roleManager)
+        public static async Task SeedRoles(RoleManager<AppRole> roleManager)
         {
             if (!roleManager.Roles.Any())
             {
-                var role = new IdentityRole
+                var role = new AppRole
                 {
                     Name = "admin"
                 };
                 await roleManager.CreateAsync(role);
 
-                role = new IdentityRole
+                role = new AppRole
                 {
                     Name = "customer"
                 };
                 await roleManager.CreateAsync(role);
                 
-                role = new IdentityRole
+                role = new AppRole
                 {
                     Name = "manager"
                 };

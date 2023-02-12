@@ -16,7 +16,7 @@ namespace OnlineShop.Extensions
             var builder = services.AddIdentityCore<AppUser>();
 
             builder = new IdentityBuilder(builder.UserType, builder.Services).AddDefaultTokenProviders();
-            builder.AddRoles<IdentityRole>();
+            builder.AddRoles<AppRole>();
             builder.AddEntityFrameworkStores<AppIdentityDbContext>();
             builder.AddSignInManager<SignInManager<AppUser>>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -31,6 +31,12 @@ namespace OnlineShop.Extensions
                             ValidateAudience = false
                         };
                     });
+
+            services.AddAuthorization(opt => 
+            {
+                opt.AddPolicy("RequireAdminRole", policy => policy.RequireRole("admin"));
+                opt.AddPolicy("ModerateItems", policy => policy.RequireRole("admin", "manager"));
+            });
 
             return services;
         }

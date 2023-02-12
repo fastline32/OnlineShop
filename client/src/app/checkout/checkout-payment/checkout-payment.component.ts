@@ -93,6 +93,7 @@ export class CheckoutPaymentComponent implements AfterViewInit, OnDestroy {
         this.toastr.error(paymentResult.error.message)
       }
       this.loading = false;
+      this.webHook();
     } catch (error) {
       console.log(error);
       this.loading = false;
@@ -105,8 +106,8 @@ export class CheckoutPaymentComponent implements AfterViewInit, OnDestroy {
         billing_details: {
           name: this.checkoutForm.get('paymentForm').get('nameOnCard').value
         }
-      }
-    });
+      }}
+    );
   }
 
   private async createOrder(basket: IBasket) {
@@ -120,5 +121,8 @@ export class CheckoutPaymentComponent implements AfterViewInit, OnDestroy {
       deliveryMethodId: +this.checkoutForm.get('deliveryForm').get('deliveryMethod').value,
       shipToAddress: this.checkoutForm.get('addressForm').value
     }
+  }
+  private webHook() {
+    return this.chechoutService.webHook();
   }
 }

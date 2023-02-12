@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AsyncValidatorFn, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { map, of, switchMap, timer } from 'rxjs';
-import { AccountService } from '../account.service';
+import { AccountService } from 'src/app/core/services/account.service';
 
 @Component({
   selector: 'app-register',
@@ -30,7 +30,7 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     this.accoutService.register(this.registerForm.value).subscribe(responce => {
-      this.router.navigateByUrl('account/confirm-email');
+      this.router.navigateByUrl('account/please-confirm');
     }, error => {
       console.log(error);
       this.errors = error.errors;

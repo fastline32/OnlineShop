@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AccountService } from '../account.service';
+import { AccountService } from 'src/app/core/services/account.service';
 
 @Component({
   selector: 'app-login',
@@ -28,6 +28,7 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     this.accountService.login(this.loginForm.value).subscribe(() => {
+      window.location.assign(this.returnUrl);
       this.router.navigateByUrl(this.returnUrl);
     }, error => {
       console.log(error);

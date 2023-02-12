@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AccountService } from 'src/app/account/account.service';
 import { BasketService } from 'src/app/basket/basket.service';
 import { IBasket } from 'src/app/shared/models/basket';
-import { IUser } from 'src/app/shared/models/user';
+import { AccountService } from '../services/account.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -12,16 +11,11 @@ import { IUser } from 'src/app/shared/models/user';
 })
 export class NavBarComponent implements OnInit {
   basket$: Observable<IBasket>;
-  currentUser$: Observable<IUser>;
-  currentUserRole$: string;
-  currentrole: any;
 
-  constructor(private basketService: BasketService, private accountService: AccountService) { }
+  constructor(private basketService: BasketService, public accountService: AccountService) { }
 
   ngOnInit(): void {
     this.basket$ = this.basketService.basket$;
-    this.currentUser$ = this.accountService.currentUser$;
-    this.currentUserRole$ = this.accountService.getRoleByToken(this.accountService.getToken());
   }
 
   logout() {

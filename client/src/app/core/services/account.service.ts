@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { map, of, ReplaySubject, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { IAddress } from '../shared/models/address';
-import { EmailConfirm } from '../shared/models/EmailConfirm';
-import { IUser } from '../shared/models/user';
+import { IAddress } from '../../shared/models/address';
+import { EmailConfirm } from '../../shared/models/EmailConfirm';
+import { IUser } from '../../shared/models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -15,13 +15,8 @@ export class AccountService {
   private currentUserSource = new ReplaySubject<IUser>(1);
   currentUser$ = this.currentUserSource.asObservable();
   tokenresp:string;
-  private _updateMenu = new Subject<void>();
 
   constructor(private http: HttpClient, private router: Router) { }
-
-  get updateMenu(){
-    return this._updateMenu;
-  }
 
   loadCurrentUser(token: string){
     if (token === null) {
@@ -34,9 +29,11 @@ export class AccountService {
     return this.http.get(this.baseUrl + 'account', {headers}).pipe(
       map((user: IUser) => {
         if(user){
+          user.roles = [];
+          const roles = this.getRoleByToken(user.token);
+          Array.isArray(roles) ? user.roles = roles : user.roles.push(roles);
           localStorage.setItem('token', user.token);
           this.currentUserSource.next(user);
-          this._updateMenu.next();
         }
       })
     );
@@ -48,29 +45,19 @@ export class AccountService {
         if(user){
           localStorage.setItem('token',user.token);
           this.currentUserSource.next(user);
-          this._updateMenu.next()
         }
       })
     );
   }
 
   register(values: any) {
-    return this.http.post(this.baseUrl + 'account/register',values).pipe(
-      map((user: IUser) => {
-        if (user) {
-          // localStorage.setItem('token',user.token);
-          // this.currentUserSource.next(user);
-          this.router.navigateByUrl('account/confirm-email')
-        }
-      })
-    );
+    return this.http.post(this.baseUrl + 'account/register',values);
   }
 
   logout() {
     localStorage.removeItem('token');
     this.currentUserSource.next(null);
     this.router.navigateByUrl('/');
-    this._updateMenu.next();
   }
 
   checkEmailExist(email: string){

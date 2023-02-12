@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ConfirmEmailComponent } from './account/confirm-email/confirm-email.component';
+import { AdminGuard } from './core/guards/admin.guard';
 import { AuthGuard } from './core/guards/auth.guard';
 import { NotFoundComponent } from './core/not-found/not-found.component';
 import { ServerErrorComponent } from './core/server-error/server-error.component';
@@ -14,16 +14,18 @@ const routes: Routes = [
   { path: 'not-found', component: NotFoundComponent, data:{breadcrumb: 'Not Found'}   },
   { path: 'shop', loadChildren: () => import('./shop/shop.module').then(mod => mod.ShopModule)
   , data:{breadcrumb: 'Shop'} },
-  { path: 'basket', loadChildren: () => import('./basket/basket.module').then(mod => mod.BasketModule)
-  , data:{breadcrumb: 'Basket'} },
-  { path: 'orders', canActivate: [AuthGuard], loadChildren: () => import('./orders/orders.module').then(mod => mod.OrdersModule)
-  , data:{breadcrumb: 'Orders'} },
-  { path: 'checkout', canActivate: [AuthGuard], loadChildren: () => import('./checkout/checkout.module').then(mod => mod.CheckoutModule)
-  , data:{breadcrumb: 'Checkout'} },
   { path: 'account', loadChildren: () => import('./account/account.module').then(mod => mod.AccountModule)
-  , data:{breadcrumb: {skip: true} } },
-  { path: 'users', loadChildren: () => import('./users/user.module').then(mod => mod.UserModule)
-  , data:{breadcrumb: 'Users' } }
+    , data:{breadcrumb: {skip: true} } },
+  {path: '', runGuardsAndResolvers: "always", canActivate: [AuthGuard], children: [
+    { path: 'basket', loadChildren: () => import('./basket/basket.module').then(mod => mod.BasketModule)
+    , data:{breadcrumb: 'Basket'} },
+    { path: 'orders', loadChildren: () => import('./orders/orders.module').then(mod => mod.OrdersModule)
+    , data:{breadcrumb: 'Orders'} },
+    { path: 'checkout', loadChildren: () => import('./checkout/checkout.module').then(mod => mod.CheckoutModule)
+    , data:{breadcrumb: 'Checkout'} },
+    {path: 'admin', loadChildren: () => import('./admin/admin.module').then(mod => mod.AdminModule),
+    canActivate: [AdminGuard], data: {skip: true}}
+  ]}
 ];
 
 @NgModule({

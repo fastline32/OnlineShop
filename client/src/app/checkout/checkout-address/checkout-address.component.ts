@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { AccountService } from 'src/app/account/account.service';
+import { AccountService } from 'src/app/core/services/account.service';
 import { IAddress } from 'src/app/shared/models/address';
 
 @Component({
