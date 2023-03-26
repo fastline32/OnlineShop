@@ -21,7 +21,7 @@ namespace OnlineShop.Controllers
             _unitOfWork = unitOfWork;
 
         }
-        [HttpGet]
+        [HttpGet("get-all")]
         [Cache(600)]
         public async Task<IActionResult> GetBrands ()
         {

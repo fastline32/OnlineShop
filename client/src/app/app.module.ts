@@ -10,14 +10,14 @@ import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptors';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
-import { BrandComponent } from './brand/brand.component';
 import { SharedModule } from './shared/shared.module';
+import { RolesModalComponent } from './modals/roles-modal/roles-modal.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    BrandComponent
+    RolesModalComponent
   ],
   imports: [
     BrowserModule,

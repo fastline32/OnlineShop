@@ -24,6 +24,8 @@ const routes: Routes = [
     { path: 'checkout', loadChildren: () => import('./checkout/checkout.module').then(mod => mod.CheckoutModule)
     , data:{breadcrumb: 'Checkout'} },
     {path: 'admin', loadChildren: () => import('./admin/admin.module').then(mod => mod.AdminModule),
+    canActivate: [AdminGuard], data: {skip: true}},
+    {path: 'brand', loadChildren: () => import('./brand/brand.module').then(mod => mod.BrandModule),
     canActivate: [AdminGuard], data: {skip: true}}
   ]}
 ];

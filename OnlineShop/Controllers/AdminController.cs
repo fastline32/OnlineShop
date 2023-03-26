@@ -28,19 +28,21 @@ namespace OnlineShop.Controllers
                 {
                     u.Id,
                     Usename = u.UserName,
-                    Roles = u.UserRole.Select(r => r.AppRole.Name).ToList()
+                    Roles = u.UserRole.Select(r => r.AppRole.Name).ToList(),
+                    DisplayName = u.DisplayName
                 })
                 .ToListAsync();
 
             return Ok(users);
         }
 
-        [HttpPost("edit-roles/{username}")]
-        public async Task<ActionResult> EditRoles(string username, [FromQuery] string roles)
+        [HttpPost("edit-roles/{email}")]
+        public async Task<ActionResult> EditRoles(string email, [FromQuery] string roles)
         {
             var selectedRoles = roles.Split(",").ToArray();
+            selectedRoles = selectedRoles.Select(r => r.ToLower()).ToArray();
 
-            var user = await _userManager.FindByNameAsync(username);
+            var user = await _userManager.FindByNameAsync(email);
 
             if(user == null) return NotFound("Could not find user");
 

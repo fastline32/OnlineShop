@@ -7,8 +7,8 @@
       <a class="p-2" routerLink="/test-error" routerLinkActive="active">Errors</a>
     </nav>
     <ng-container *ngIf='(accountService.currentUser$ | async)'>
-      <div *appHasRole="['admin']" class="d-flex align-items-center">
-        <div class="dropdown ml-3 mr-5" dropdown>
+      <div class="d-flex align-items-center">
+        <div *appHasRole="['admin']" class="dropdown ml-3 mr-5" dropdown>
           <a  class="dropdown-toggle" style="cursor: pointer" dropdownToggle>
             <strong>Admin Panel</strong>
           </a>
@@ -19,19 +19,19 @@
             <div class="dropdown-divider"></div>
           </div>
         </div>
-        <div class="dropdown ml-3 mr-5" dropdown>
+        <div *appHasRole="['admin','manager']" class="dropdown ml-3 mr-5" dropdown>
           <a class="dropdown-toggle" style="cursor: pointer" dropdownToggle>
             <strong>Editor Panel</strong>
           </a>
           <div class="dropdown-menu dropdown-menu-right" style="cursor: pointer;" *dropdownMenu>
-             <a routerLink="/brands" class="dropdown-item d-flex align-items center py-2">
-               <i class="fa fa-pencil mr-2"></i> Edit Brand
+             <a routerLink="/brand/list" class="dropdown-item d-flex align-items center py-2">
+               <i class="fa fa-pencil mr-2"></i>Brands
              </a>
              <a routerLink="/types" class="dropdown-item d-flex align-items center py-2">
-              <i class="fa fa-pencil mr-2"></i> Edit Types
+              <i class="fa fa-pencil mr-2"></i>Types
             </a>
             <a routerLink="/product" class="dropdown-item d-flex align-items center py-2">
-              <i class="fa fa-pencil mr-2"></i> Edit Product
+              <i class="fa fa-pencil mr-2"></i>Product
             </a>
           </div>
       </div>

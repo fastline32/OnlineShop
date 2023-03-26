@@ -1,0 +1,15 @@
+<div class="container">
+    <div class="row">
+        <table class="table">
+           <tr>
+              <th style="width: 80%">Name</th>
+              <th style="width: 20%"></th>
+           </tr>
+           <tr *ngFor="let brand of brandList">
+              <td>{{brand.name}}</td>
+              <td><button class="btn btn-info ms-1" style="background-color: #17a2b8">Edit Brand</button></td>
+           </tr>
+        </table>
+     </div>
+</div>
+

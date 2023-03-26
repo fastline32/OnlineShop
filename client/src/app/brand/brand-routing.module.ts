@@ -1,16 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
+import { ListComponent } from './list/list.component';
 
 const routes : Routes = [
   {path:'create'},
-  {path:'delete'}
+  {path:'delete'},
+  {path:'list',component:ListComponent},
+  {path:'edit'}
 ]
 
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule
+    CommonModule,
+    RouterModule.forChild(routes)
   ]
 })
 export class BrandRoutingModule { }
