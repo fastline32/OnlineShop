@@ -26,6 +26,8 @@ const routes: Routes = [
     {path: 'admin', loadChildren: () => import('./admin/admin.module').then(mod => mod.AdminModule),
     canActivate: [AdminGuard], data: {skip: true}},
     {path: 'brand', loadChildren: () => import('./brand/brand.module').then(mod => mod.BrandModule),
+    canActivate: [AdminGuard], data: {skip: true}},
+    {path: 'type', loadChildren: () => import('./type/type.module').then(mod => mod.TypeModule),
     canActivate: [AdminGuard], data: {skip: true}}
   ]}
 ];

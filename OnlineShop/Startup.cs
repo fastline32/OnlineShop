@@ -60,6 +60,24 @@ namespace OnlineShop
         {
             app.UseMiddleware<ExceptionMiddleware>();
 
+            app.UseXContentTypeOptions();
+            app.UseReferrerPolicy(opt => opt.NoReferrer());
+            app.UseXXssProtection(opt => opt.EnabledWithBlockMode());
+            app.UseXfo(opt => opt.Deny());
+            app.UseCsp(opt => opt
+                .BlockAllMixedContent()
+                .FormActions(s => s.Self().CustomSources("https://fonts.googleapis.com/"))
+                .FrameAncestors(s => s.Self())
+                .ImageSources(s => s.Self().CustomSources("data:"))
+                
+            );
+
+            app.Use(async (context, next) => 
+            {
+                context.Response.Headers.Add("Strict-Transport-Security", "max-age=31536000");
+                await next.Invoke();
+            });
+
             app.UseStatusCodePagesWithReExecute("/errors/{0}");
             app.UseHttpsRedirection();
             app.UseSwaggerDocumentation();
